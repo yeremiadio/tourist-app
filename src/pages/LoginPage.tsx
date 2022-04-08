@@ -1,9 +1,8 @@
 import apiClient from "../utils/apiClient";
 import { Formik, Form } from "formik";
 import TextField from "../components/TextFields/TextField";
-// import SubmitButton from "../components/Buttons/SubmitButton";
 import Button from "../components/Buttons/Button";
-import Layout from "../components/Layouts/Layout";
+import { Link } from "react-router-dom";
 
 interface LoginFormValues {
   email: string;
@@ -19,19 +18,26 @@ function LoginPage() {
       .post("api/authaccount/login", values)
       .then((res) => {
         console.log(JSON.stringify(res.data.data));
-        // actions.setSubmitting(false);
       });
   };
   return (
-    <Layout>
-      <div className="min-h-screen grid grid-cols-1 md:grid-cols-2 border border-red-500">
-        <div className="grid grid-cols-1 place-content-center">
-          <div className="bg-white border border-gray-200 p-4 md:mx-24">
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-              {({ isSubmitting }) => (
+    <div className="min-h-screen grid grid-cols-1 border border-red-500">
+      <div className="grid grid-cols-1 place-content-center">
+        <div className="p-4 md:p-8 lg:mx-[30vw]">
+          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            {({ isSubmitting }) => (
+              <>
+                <div className="mb-6">
+                  <h3 className="text-3xl font-extrabold text-black-secondary mb-1">
+                    Welcome Back!
+                  </h3>
+                  <p className="text-black-secondary text-opacity-50 text-sm">
+                    Please login with your valid credentials.
+                  </p>
+                </div>
                 <Form>
                   <TextField
-                    label="Email"
+                    label="Email address"
                     type="email"
                     name="email"
                     placeholder="johndoe@example.com"
@@ -42,23 +48,41 @@ function LoginPage() {
                     type="password"
                     placeholder="password..."
                   />
+                  <div className="my-3 float-right">
+                    <Link to={"/forgot"}>
+                      <span className="text-blue-primary font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
+                        Forgot Password?
+                      </span>
+                    </Link>
+                  </div>
                   <Button
                     bgColor="blue-primary"
-                    className="text-white"
+                    className="text-white w-full mt-2"
                     type="submit"
                     disabled={isSubmitting}
                     isLoading={isSubmitting}
                   >
-                    Login
+                    {isSubmitting ? "Checking..." : "Login"}
                   </Button>
+                  <div className="mt-6 text-center">
+                    <span className="text-black-secondary text-opacity-50 text-sm">
+                      Don't have an account?
+                      <Link to={"/register"}>
+                        <span className="text-blue-primary font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
+                          {" "}
+                          Register
+                        </span>
+                      </Link>
+                    </span>
+                  </div>
                 </Form>
-              )}
-            </Formik>
-          </div>
+              </>
+            )}
+          </Formik>
         </div>
-        <div className="hidden border border-blue-500 md:block"></div>
       </div>
-    </Layout>
+      {/* <div className="hidden border border-blue-500 md:block"></div> */}
+    </div>
   );
 }
 

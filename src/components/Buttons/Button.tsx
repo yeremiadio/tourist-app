@@ -17,7 +17,7 @@ const Button: FC<ButtonProps> = (props) => {
   return (
     <button
       className={classNames(
-        "px-6 py-2 font-semibold rounded-md transition-all delay-75",
+        "px-6 py-[9px] font-medium text-base rounded-lg transition-all delay-75 flex items-center justify-center",
         `bg-${bgColor} hover:bg-opacity-80 disabled:opacity-50 disabled:bg-opacity-100`,
         className
       )}

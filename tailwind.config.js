@@ -8,8 +8,9 @@ module.exports = {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
       },
       colors: {
-        "blue-primary": "#0175E3",
-        "black-secondary": "#061237",
+        "blue-primary": "#3069FE",
+        "orange-primary": "#FF8C32",
+        "black-secondary": "#1E294B",
       },
     },
   },
