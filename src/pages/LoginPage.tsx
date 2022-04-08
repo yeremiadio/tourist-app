@@ -3,6 +3,9 @@ import { Formik, Form } from "formik";
 import TextField from "../components/TextFields/TextField";
 import Button from "../components/Buttons/Button";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import { sleep } from "../utils/sleep";
 
 interface LoginFormValues {
   email: string;
@@ -10,16 +13,37 @@ interface LoginFormValues {
 }
 function LoginPage() {
   const initialValues: LoginFormValues = {
-    email: "badu@gmail.com",
-    password: "hahahihi",
+    email: "",
+    password: "",
   };
+  const [errors, setErrors] = useState<Array<string>>([]);
   const handleSubmit = async (values: any, actions: any) => {
     await apiClient()
       .post("api/authaccount/login", values)
       .then((res) => {
+        toast.success("You are successfully logged in", {
+          duration: 3000,
+          position: "bottom-center",
+        });
+        actions.setSubmitting(false);
         console.log(JSON.stringify(res.data.data));
+      })
+      .catch((err) => {
+        const errorsObj = err.response.data;
+        setErrors(errorsObj.message);
+        actions.setSubmitting(false);
+        toast.error(`${errorsObj.error} [${errorsObj.statusCode}]`, {
+          duration: 3000,
+          position: "bottom-center",
+        });
       });
+
+    if (errors) {
+      await sleep(3000);
+      setErrors([]);
+    }
   };
+
   return (
     <div className="min-h-screen grid grid-cols-1 border border-red-500">
       <div className="grid grid-cols-1 place-content-center">
@@ -35,18 +59,29 @@ function LoginPage() {
                     Please login with your valid credentials.
                   </p>
                 </div>
+                {errors.length > 0 && (
+                  <div className="bg-red-500 bg-opacity-5 transition-all delay-75 border-2 border-red-500 rounded-lg w-full py-2 px-6">
+                    {errors.map((item) => (
+                      <ul key={item} className="text-red-500 list-disc text-sm">
+                        <li>{item}</li>
+                      </ul>
+                    ))}
+                  </div>
+                )}
                 <Form>
                   <TextField
                     label="Email address"
                     type="email"
+                    isError={errors.length > 0 && true}
                     name="email"
                     placeholder="johndoe@example.com"
                   />
                   <TextField
                     label="Password"
                     name="password"
+                    isError={errors.length > 0 && true}
                     type="password"
-                    placeholder="password..."
+                    placeholder="insert your password..."
                   />
                   <div className="my-3 float-right">
                     <Link to={"/forgot"}>
