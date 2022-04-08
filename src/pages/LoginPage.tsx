@@ -6,13 +6,10 @@ import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { sleep } from "../utils/sleep";
+import { UserLoginFormValues } from "../model/User";
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
 function LoginPage() {
-  const initialValues: LoginFormValues = {
+  const initialValues: UserLoginFormValues = {
     email: "",
     password: "",
   };
@@ -21,7 +18,7 @@ function LoginPage() {
     await apiClient()
       .post("api/authaccount/login", values)
       .then((res) => {
-        toast.success("You are successfully logged in", {
+        toast.success("Successfully logged in", {
           duration: 3000,
           position: "bottom-center",
         });
@@ -29,10 +26,14 @@ function LoginPage() {
         console.log(JSON.stringify(res.data.data));
       })
       .catch((err) => {
+        //define errors into object
         const errorsObj = err.response.data;
-        setErrors(errorsObj.message);
+        const statusCode = errorsObj.statusCode;
+        //If status code === 400 then set error message
+        statusCode === 400 && setErrors(errorsObj.message);
         actions.setSubmitting(false);
-        toast.error(`${errorsObj.error} [${errorsObj.statusCode}]`, {
+        actions.resetForm();
+        toast.error(`${errorsObj.error} [${statusCode}]`, {
           duration: 3000,
           position: "bottom-center",
         });
@@ -50,7 +51,7 @@ function LoginPage() {
         <div className="p-4 md:p-8 lg:mx-[30vw]">
           <Formik initialValues={initialValues} onSubmit={handleSubmit}>
             {({ isSubmitting }) => (
-              <>
+              <Form>
                 <div className="mb-6">
                   <h3 className="text-3xl font-extrabold text-black-secondary mb-1">
                     Welcome Back!
@@ -68,12 +69,12 @@ function LoginPage() {
                     ))}
                   </div>
                 )}
-                <Form>
+                <div>
                   <TextField
                     label="Email address"
                     type="email"
-                    isError={errors.length > 0 && true}
                     name="email"
+                    isError={errors.length > 0 && true}
                     placeholder="johndoe@example.com"
                   />
                   <TextField
@@ -110,8 +111,8 @@ function LoginPage() {
                       </Link>
                     </span>
                   </div>
-                </Form>
-              </>
+                </div>
+              </Form>
             )}
           </Formik>
         </div>

@@ -1,29 +1,28 @@
 import { FC, HTMLInputTypeAttribute } from "react";
 import classNames from "../../utils/tailwindClassNames";
+import { useField, Form, FormikProps, FieldHookConfig } from "formik";
 
 interface TextFieldProps {
   type: HTMLInputTypeAttribute;
   placeholder?: string;
   className?: string;
   label: string;
-  name?: string;
   helperText?: string;
   isError?: boolean;
   errorMessage?: string;
 }
 
-const TextField: FC<TextFieldProps> = (props) => {
-  const {
-    label,
-    type,
-    name,
-    placeholder,
-    helperText,
-    isError,
-    errorMessage,
-    className,
-    ...rest
-  } = props;
+const TextField = ({
+  label,
+  placeholder,
+  isError,
+  type,
+  errorMessage,
+  helperText,
+  className,
+  ...props
+}: TextFieldProps & FieldHookConfig<string>) => {
+  const [field] = useField(props);
   return (
     <div className="mt-4">
       <label
@@ -36,7 +35,6 @@ const TextField: FC<TextFieldProps> = (props) => {
       </label>
       <input
         type={type ? type : "text"}
-        name={name}
         className={classNames(
           "text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-blue-500 transition-all delay-75 focus:ring-1 focus:border-blue-500 block w-full p-2.5",
           isError
@@ -45,8 +43,7 @@ const TextField: FC<TextFieldProps> = (props) => {
           className
         )}
         placeholder={placeholder}
-        required
-        {...rest}
+        {...field}
       />
       {isError ? (
         <p className="text-red-500 text-sm">{errorMessage}</p>
