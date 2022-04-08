@@ -1,56 +1,97 @@
-import apiClient from "../utils/apiClient";
-import { Formik, Form } from "formik";
+import { Formik, Form, FormikValues } from "formik";
 import TextField from "../components/TextFields/TextField";
 import Button from "../components/Buttons/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import { sleep } from "../utils/sleep";
+import { useEffect, useRef, useState } from "react";
+import { setUser } from "../redux/auth/authSlice";
 import { UserLoginFormValues } from "../model/User";
+import { useSigninUserMutation } from "../redux/api/authApi";
+import { useAppDispatch } from "../redux/hooks";
+import { sleep } from "../utils/sleep";
 
 function LoginPage() {
   const initialValues: UserLoginFormValues = {
     email: "",
     password: "",
   };
+  const formikRef = useRef<FormikValues>() as any;
+  const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<Array<string>>([]);
-  const handleSubmit = async (values: any, actions: any) => {
-    await apiClient()
-      .post("api/authaccount/login", values)
-      .then((res) => {
-        toast.success("Successfully logged in", {
-          duration: 3000,
-          position: "bottom-center",
-        });
-        actions.setSubmitting(false);
-        console.log(JSON.stringify(res.data.data));
-      })
-      .catch((err) => {
-        //define errors into object
-        const errorsObj = err.response.data;
-        const statusCode = errorsObj.statusCode;
-        //If status code === 400 then set error message
-        statusCode === 400 && setErrors(errorsObj.message);
-        actions.setSubmitting(false);
-        actions.resetForm();
-        toast.error(`${errorsObj.error} [${statusCode}]`, {
-          duration: 3000,
-          position: "bottom-center",
-        });
-      });
+  const navigate = useNavigate();
+  const [signinUser, { data, isLoading, error, isError, isSuccess }] =
+    useSigninUserMutation();
 
+  const login = async (values: any) => {
+    signinUser({ ...values });
     if (errors) {
       await sleep(3000);
       setErrors([]);
     }
   };
 
+  useEffect(() => {
+    const ac = new AbortController();
+    if (isError) {
+      //Formik Actions
+      formikRef.current.setSubmitting(false);
+      formikRef.current.resetForm();
+
+      //Get Error object
+      const errorObj = Object.assign(error as any);
+
+      //Switch case with error status
+      switch (errorObj.status) {
+        case 400:
+          setErrors(errorObj.data.message);
+          toast.error(`Bad Request [${errorObj.status}]`, {
+            duration: 3000,
+            position: "bottom-center",
+          });
+          break;
+        case 500:
+          toast.error(`${errorObj.data.message}`, {
+            duration: 3000,
+            position: "bottom-center",
+          });
+          break;
+        default:
+          toast.error(`Unexpected Error`, {
+            duration: 3000,
+            position: "bottom-center",
+          });
+          break;
+      }
+    }
+    if (isSuccess) {
+      //Define user
+      const user = data.data;
+      //Set user
+      dispatch(setUser(user));
+      toast.success("Successfully logged in", {
+        duration: 3000,
+        position: "bottom-center",
+      });
+      formikRef.current.setSubmitting(false);
+      navigate("/");
+      localStorage.setItem("token", user.Token);
+    }
+
+    return () => {
+      ac.abort();
+    };
+  }, [isError, isSuccess]);
+
   return (
     <div className="min-h-screen grid grid-cols-1 border border-red-500">
       <div className="grid grid-cols-1 place-content-center">
         <div className="p-4 md:p-8 lg:mx-[30vw]">
-          <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-            {({ isSubmitting }) => (
+          <Formik
+            innerRef={formikRef}
+            initialValues={initialValues}
+            onSubmit={login}
+          >
+            {() => (
               <Form>
                 <div className="mb-6">
                   <h3 className="text-3xl font-extrabold text-black-secondary mb-1">
@@ -95,10 +136,10 @@ function LoginPage() {
                     bgColor="blue-primary"
                     className="text-white w-full mt-2"
                     type="submit"
-                    disabled={isSubmitting}
-                    isLoading={isSubmitting}
+                    disabled={isLoading}
+                    isLoading={isLoading}
                   >
-                    {isSubmitting ? "Checking..." : "Login"}
+                    {isLoading ? "Checking..." : "Login"}
                   </Button>
                   <div className="mt-6 text-center">
                     <span className="text-black-secondary text-opacity-50 text-sm">
