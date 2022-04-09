@@ -91,7 +91,7 @@ function LoginPage() {
     return () => {
       ac.abort();
     };
-  }, [token]);
+  }, [token, navigate]);
 
   return (
     <div className="min-h-screen grid grid-cols-1">

@@ -14,7 +14,7 @@ function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     const ac = new AbortController();
-    user && dispatch(getUser(user.id));
+    user.id && dispatch(getUser(user.id));
     return () => {
       ac.abort();
     };

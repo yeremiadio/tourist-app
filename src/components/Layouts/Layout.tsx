@@ -1,11 +1,17 @@
-import React, { FC, ReactNode } from "react";
+import { FC, Fragment, ReactNode } from "react";
+import Navbar from "../Navigations/Navbar";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout: FC<LayoutProps> = ({ children }) => {
-  return <div className="container mx-auto px-4">{children}</div>;
+  return (
+    <Fragment>
+      <Navbar />
+      <div className="container mx-auto">{children}</div>
+    </Fragment>
+  );
 };
 
 export default Layout;

@@ -1,6 +1,6 @@
-import { FC, HTMLInputTypeAttribute } from "react";
+import { HTMLInputTypeAttribute } from "react";
 import classNames from "../../utils/tailwindClassNames";
-import { useField, Form, FormikProps, FieldHookConfig } from "formik";
+import { useField, FieldHookConfig } from "formik";
 
 interface TextFieldProps {
   type: HTMLInputTypeAttribute;
