@@ -19,6 +19,7 @@ function LoginPage() {
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<Array<string>>([]);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   const [signinUser, { data, isLoading, error, isError, isSuccess }] =
     useSigninUserMutation();
 
@@ -82,8 +83,18 @@ function LoginPage() {
     };
   }, [isError, isSuccess, data, dispatch, error, navigate]);
 
+  useEffect(() => {
+    const ac = new AbortController();
+    if (token) {
+      navigate("/tourist");
+    }
+    return () => {
+      ac.abort();
+    };
+  }, [token]);
+
   return (
-    <div className="min-h-screen grid grid-cols-1 border border-red-500">
+    <div className="min-h-screen grid grid-cols-1">
       <div className="grid grid-cols-1 place-content-center">
         <div className="p-4 md:p-8 lg:mx-[30vw]">
           <Formik
