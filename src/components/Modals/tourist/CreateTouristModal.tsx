@@ -70,7 +70,7 @@ const CreateTouristModal = (props: ModalProps & Props) => {
     createTourist({ ...values });
   };
   return (
-    <RootModal isOpen={isOpen} setOpen={onSubmit}>
+    <RootModal isOpen={isOpen} setOpen={setOpen}>
       <Formik initialValues={initialValues} onSubmit={onSubmit}>
         {({ isSubmitting }) => (
           <Fragment>
