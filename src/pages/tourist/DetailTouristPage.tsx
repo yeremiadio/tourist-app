@@ -176,107 +176,116 @@ const DetailTouristPage = () => {
                   setOpen={setModalDelete}
                   handleClick={handleDeleteTourist}
                 />
-                <div className="pb-6">
-                  <Button
-                    bgColor="gray-800"
-                    variants="ghost"
-                    className="gap-3"
-                    type="button"
-                    onClick={() => navigate(-1)}
-                  >
-                    <ArrowLeftIcon className="w-4 h-4" />
-                    Back
-                  </Button>
-                </div>
-                <div className="container mx-auto space-y-4 md:space-y-0  max-w-4xl grid md:grid-cols-2 place-items-center">
-                  <div className="grid grid-cols-1 place-items-center overflow-hidden">
-                    <div className="flex flex-1 items-center gap-2">
-                      <div className="relative">
-                        {typeof values.tourist_profilepicture !== "object" ? (
-                          <img
-                            src={touristProfilePicture}
-                            alt={touristName}
-                            className="rounded-full w-36 h-36 object-cover border border-gray-200"
-                          />
-                        ) : (
-                          <img
-                            src={URL.createObjectURL(
-                              values.tourist_profilepicture
-                            )}
-                            alt={touristName}
-                            className="rounded-full w-36 h-36 object-cover border border-gray-200"
-                          />
-                        )}
 
-                        <button
-                          type="button"
-                          onClick={() => uploadProfilePicture.current?.click()}
-                          className="absolute bottom-1 right-2 rounded-full p-3 bg-blue-500 transition-all delay-75 hover:bg-blue-900 cursor-pointer"
-                        >
-                          <PencilIcon className="w-5 h-5 text-white" />
-                          <input
-                            type="file"
-                            className="hidden"
-                            name="tourist_profilepicture"
-                            ref={uploadProfilePicture}
-                            onChange={handleChangeFile}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="text-center space-y-1 mt-4">
-                      <h3 className="text-black-secondary font-bold text-3xl">
-                        {values.tourist_name}
-                      </h3>
-                      <p className="text-base break-all break-words text-black-secondary text-opacity-60">
-                        {values.tourist_email}
-                      </p>
-                      <div className="flex justify-center items-center gap-1 text-black-secondary text-opacity-80">
-                        <LocationMarkerIcon className="w-5 h-5" />
-                        <p className="text-base mt-[2px]">
-                          {values.tourist_location}
-                        </p>
-                      </div>
-                    </div>
+                <div className="container mx-auto max-w-4xl">
+                  <div className="pb-6">
+                    <Button
+                      bgColor="gray-800"
+                      variants="ghost"
+                      className="gap-3"
+                      type="button"
+                      onClick={() => navigate(-1)}
+                    >
+                      <ArrowLeftIcon className="w-4 h-4" />
+                      Back
+                    </Button>
                   </div>
-                  <div className="grid grid-cols-1 w-full md:px-12">
-                    <div className="bg-white p-4 rounded-md shadow-md">
-                      <h3 className="text-gray-800 font-extrabold text-3xl mb-1">
-                        Update Tourist
-                      </h3>
-                      <p className="text-gray-400 text-sm">
-                        Please input all the fields
-                      </p>
-                      <TextField name="tourist_name" type="text" label="Name" />
-                      <TextField
-                        name="tourist_email"
-                        type="email"
-                        label="Email"
-                      />
-                      <TextField
-                        name="tourist_location"
-                        type="text"
-                        label="Location"
-                      />
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          onClick={() => setModalUpdate(true)}
-                          bgColor="blue-500"
-                          className="mt-4"
-                          variants="solid"
-                        >
-                          Update
-                        </Button>
-                        <Button
-                          type="button"
-                          bgColor="red-500"
-                          onClick={() => setModalDelete(true)}
-                          className="mt-4"
-                          variants="outlined"
-                        >
-                          Delete
-                        </Button>
+                  <div className="grid md:grid-cols-2 place-items-center space-y-4 md:space-y-0">
+                    <div className="grid grid-cols-1 place-items-center overflow-hidden">
+                      <div className="flex flex-1 items-center gap-2">
+                        <div className="relative">
+                          {typeof values.tourist_profilepicture !== "object" ? (
+                            <img
+                              src={touristProfilePicture}
+                              alt={touristName}
+                              className="rounded-full w-36 h-36 object-cover border border-gray-200"
+                            />
+                          ) : (
+                            <img
+                              src={URL.createObjectURL(
+                                values.tourist_profilepicture
+                              )}
+                              alt={touristName}
+                              className="rounded-full w-36 h-36 object-cover border border-gray-200"
+                            />
+                          )}
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              uploadProfilePicture.current?.click()
+                            }
+                            className="absolute bottom-1 right-2 rounded-full p-3 bg-blue-500 transition-all delay-75 hover:bg-blue-900 cursor-pointer"
+                          >
+                            <PencilIcon className="w-5 h-5 text-white" />
+                            <input
+                              type="file"
+                              className="hidden"
+                              name="tourist_profilepicture"
+                              ref={uploadProfilePicture}
+                              onChange={handleChangeFile}
+                            />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="text-center space-y-1 mt-4">
+                        <h3 className="text-black-secondary font-bold text-3xl">
+                          {values.tourist_name}
+                        </h3>
+                        <p className="text-base break-all break-words text-black-secondary text-opacity-60">
+                          {values.tourist_email}
+                        </p>
+                        <div className="flex justify-center items-center gap-1 text-black-secondary text-opacity-80">
+                          <LocationMarkerIcon className="w-5 h-5" />
+                          <p className="text-base mt-[2px]">
+                            {values.tourist_location}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 w-full md:px-12">
+                      <div className="bg-white p-4 rounded-md shadow-md">
+                        <h3 className="text-gray-800 font-extrabold text-3xl mb-1">
+                          Update Tourist
+                        </h3>
+                        <p className="text-gray-400 text-sm">
+                          Please input all the fields
+                        </p>
+                        <TextField
+                          name="tourist_name"
+                          type="text"
+                          label="Name"
+                        />
+                        <TextField
+                          name="tourist_email"
+                          type="email"
+                          label="Email"
+                        />
+                        <TextField
+                          name="tourist_location"
+                          type="text"
+                          label="Location"
+                        />
+                        <div className="flex gap-2">
+                          <Button
+                            type="button"
+                            onClick={() => setModalUpdate(true)}
+                            bgColor="blue-500"
+                            className="mt-4"
+                            variants="solid"
+                          >
+                            Update
+                          </Button>
+                          <Button
+                            type="button"
+                            bgColor="red-500"
+                            onClick={() => setModalDelete(true)}
+                            className="mt-4"
+                            variants="outlined"
+                          >
+                            Delete
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
