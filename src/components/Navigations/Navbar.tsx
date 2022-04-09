@@ -7,7 +7,7 @@ const Navbar = () => {
   return (
     <header className="sticky top-0 z-40">
       <nav className="bg-white w-full border-b border-gray-200">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-5">
           <div className="flex justify-between">
             <div>Tourist App</div>
             <div>
