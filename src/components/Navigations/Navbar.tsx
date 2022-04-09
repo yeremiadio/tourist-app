@@ -11,9 +11,9 @@ const Navbar = () => {
         <div className="container mx-auto p-4 md:px-12 py-5">
           <div className="flex justify-between">
             <Link to={user ? "/tourist" : "/"}>
-              <a className="font-extrabold text-blue-500 cursor-pointer">
+              <span className="font-extrabold text-blue-500 cursor-pointer">
                 Tourist App
-              </a>
+              </span>
             </Link>
             <div>
               <UserDropdown avatar={user.avatar} name={user.name} />

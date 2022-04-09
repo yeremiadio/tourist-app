@@ -15,7 +15,7 @@ export const touristApi = createApi({
     }),
     endpoints: (builder) => ({
         createTourist: builder.mutation({
-            query: (body: Tourist) => {
+            query: (body: Partial<Tourist>) => {
                 return {
                     url: "/",
                     method: "post",

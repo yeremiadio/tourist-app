@@ -22,18 +22,15 @@ interface ValidationErrors {
 //Get All tourists
 export const getTourists = createAsyncThunk<
     Tourist,
-    { pageNum: number, setIsLoading: Dispatch<SetStateAction<any>> },
+    { pageNum: number },
     {
         rejectValue: ValidationErrors
     }
->('tourist/getTourists', async ({ pageNum, setIsLoading }, { rejectWithValue }) => {
-    setIsLoading(true)
+>('tourist/getTourists', async ({ pageNum }, { rejectWithValue }) => {
     try {
-        setIsLoading(false)
         const response = await apiClient().get(`api/Tourist?page=${pageNum}`)
         return response.data
     } catch (err) {
-        setIsLoading(false)
         let error: AxiosError<ValidationErrors> | any = err // cast the error for access
         if (!error.response) {
             throw err
@@ -66,7 +63,11 @@ export const getTouristById = createAsyncThunk<
 export const touristSlice = createSlice({
     name: "tourist",
     initialState,
-    reducers: {},
+    reducers: {
+        touristAdded(state, { payload }: PayloadAction<any>) {
+            state.touristList.push(payload)
+        },
+    },
     extraReducers: (builder) => {
         builder.addCase(getTourists.fulfilled, (state, { payload }: PayloadAction<any>) => {
             state.touristList = payload
