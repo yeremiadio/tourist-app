@@ -1,4 +1,8 @@
-import { LocationMarkerIcon, PencilIcon } from "@heroicons/react/solid";
+import {
+  ArrowLeftIcon,
+  LocationMarkerIcon,
+  PencilIcon,
+} from "@heroicons/react/solid";
 import { Form, Formik, FormikValues } from "formik";
 import {
   ChangeEvent,
@@ -151,7 +155,7 @@ const DetailTouristPage = () => {
 
   return (
     <Layout>
-      <section className="p-4 md:px-12 h-screen w-full">
+      <section className="p-4 md:px-12 min-h-screen w-full">
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
@@ -172,6 +176,18 @@ const DetailTouristPage = () => {
                   setOpen={setModalDelete}
                   handleClick={handleDeleteTourist}
                 />
+                <div className="pb-6">
+                  <Button
+                    bgColor="gray-800"
+                    variants="ghost"
+                    className="gap-3"
+                    type="button"
+                    onClick={() => navigate(-1)}
+                  >
+                    <ArrowLeftIcon className="w-4 h-4" />
+                    Back
+                  </Button>
+                </div>
                 <div className="container mx-auto space-y-4 md:space-y-0  max-w-4xl grid md:grid-cols-2 place-items-center">
                   <div className="grid grid-cols-1 place-items-center overflow-hidden">
                     <div className="flex flex-1 items-center gap-2">
@@ -225,6 +241,12 @@ const DetailTouristPage = () => {
                   </div>
                   <div className="grid grid-cols-1 w-full md:px-12">
                     <div className="bg-white p-4 rounded-md shadow-md">
+                      <h3 className="text-gray-800 font-extrabold text-3xl mb-1">
+                        Update Tourist
+                      </h3>
+                      <p className="text-gray-400 text-sm">
+                        Please input all the fields
+                      </p>
                       <TextField name="tourist_name" type="text" label="Name" />
                       <TextField
                         name="tourist_email"

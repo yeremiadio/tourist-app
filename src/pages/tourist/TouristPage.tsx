@@ -33,7 +33,7 @@ function TouristPage() {
 
   return (
     <Layout>
-      <section className="p-4 md:px-12 h-screen w-full">
+      <section className="p-4 md:px-12 min-h-screen w-full">
         <div className="container mx-auto">
           <div className="mb-4 flex justify-end min-w-max">
             <Button bgColor="blue-500" className="gap-2">
