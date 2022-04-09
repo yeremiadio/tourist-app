@@ -11,7 +11,7 @@ function RootModal({ isOpen, setOpen, children }: ModalProps) {
           className="fixed z-50 inset-0 overflow-y-auto"
           onClose={setOpen}
         >
-          <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+          <div className="grid grid-cols-1 h-screen place-content-center px-4 pt-4 text-center sm:block sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
