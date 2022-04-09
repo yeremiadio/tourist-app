@@ -46,7 +46,7 @@ const UserDropdown: FC<Partial<User>> = (props) => {
           >
             <Menu.Items className="origin-top-right mt-6 focus:outline-none absolute right-2 bg-white overflow-hidden rounded-md shadow-lg border w-48">
               <Menu.Item>
-                <a
+                <span
                   className={
                     pathname.indexOf("profile") !== -1
                       ? "block px-4 py-2 text-sm text-gray-700 cursor-pointer bg-gray-100"
@@ -55,10 +55,10 @@ const UserDropdown: FC<Partial<User>> = (props) => {
                   onClick={() => navigate("/profile")}
                 >
                   Profile
-                </a>
+                </span>
               </Menu.Item>
               <Menu.Item>
-                <a
+                <span
                   className={
                     "block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
                   }
@@ -68,7 +68,7 @@ const UserDropdown: FC<Partial<User>> = (props) => {
                   }}
                 >
                   Logout
-                </a>
+                </span>
               </Menu.Item>
             </Menu.Items>
           </Transition>

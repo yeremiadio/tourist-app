@@ -9,7 +9,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <Fragment>
       <Navbar />
-      <main>{children}</main>
+      <main className="pt-24 bg-gray-50">{children}</main>
     </Fragment>
   );
 };

@@ -1,5 +1,5 @@
 export default interface Tourist {
-    Id: string;
+    id: string;
     tourist_email: string;
     tourist_location: string;
     tourist_profilepicture: string;
