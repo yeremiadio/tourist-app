@@ -2,7 +2,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { usePagination, DOTS } from "../../utils/usePagination";
 import { Dispatch, FC, SetStateAction } from "react";
 import classNames from "../../utils/tailwindClassNames";
-import { useSearchParams } from "react-router-dom";
 
 interface Props {
   currentPage: number | any;
