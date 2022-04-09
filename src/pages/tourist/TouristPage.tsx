@@ -1,4 +1,5 @@
-import { SetStateAction, useEffect, useMemo, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import TouristCard from "../../components/Cards/TouristCard";
 import Layout from "../../components/Layouts/Layout";
 import PaginationButton from "../../components/Paginations/PaginationButton";
@@ -10,11 +11,13 @@ import classNames from "../../utils/tailwindClassNames";
 function TouristPage() {
   const dispatch = useAppDispatch();
   const [page, setPage] = useState<SetStateAction<number | any>>(1);
+  const [isLoading, setIsLoading] = useState<SetStateAction<any>>(false);
 
   const { touristList } = useAppSelector((state) => state.tourist);
   useEffect(() => {
     const ac = new AbortController();
-    dispatch(getTourists({ pageNum: page }));
+    window.scrollTo({ behavior: "smooth", top: 0 });
+    dispatch(getTourists({ pageNum: page, setIsLoading }));
     return () => {
       ac.abort();
     };
@@ -26,20 +29,22 @@ function TouristPage() {
         <div className="container mx-auto">
           <div
             className={classNames(
-              "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+              "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
             )}
           >
-            {touristList ? (
-              touristList.data?.map((item: any, index: number) => (
-                <TouristCard key={item.id} {...item} />
-              ))
-            ) : (
+            {isLoading && touristList ? (
               <CardSkeleton />
+            ) : (
+              touristList.data?.map((item: any, index: number) => (
+                <Link key={item.id} to={item.id}>
+                  <TouristCard {...item} />
+                </Link>
+              ))
             )}
           </div>
           {touristList && (
             <PaginationButton
-              siblingCount={2}
+              siblingCount={1}
               itemsPerPage={touristList.per_page}
               setPage={setPage}
               totalRecord={touristList.totalrecord}

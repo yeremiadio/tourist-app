@@ -20,7 +20,7 @@ const range = (start: any, end: any) => {
 };
 
 export const usePagination = (props: Props) => {
-    const { totalRecord, totalPage, pageSize, siblingCount, currentPage } = props
+    const { totalPage, siblingCount, currentPage, } = props
     const paginationRange = useMemo(() => {
         const totalPageCount = totalPage;
 
@@ -84,7 +84,7 @@ export const usePagination = (props: Props) => {
             let middleRange = range(leftSiblingIndex, rightSiblingIndex);
             return [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
         }
-    }, [totalRecord, pageSize, siblingCount, currentPage]);
+    }, [totalPage, siblingCount, currentPage]);
 
     return paginationRange;
 };

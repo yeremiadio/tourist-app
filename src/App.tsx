@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { getUser } from "./redux/auth/authSlice";
 import ProtectedRoute from "./components/ProtectedRoute";
 import TouristPage from "./pages/tourist/TouristPage";
+import DetailTouristPage from "./pages/tourist/DetailTouristPage";
 
 function App() {
   const { user } = useAppSelector((state) => state.auth);
@@ -31,6 +32,7 @@ function App() {
           {/* Private Routes */}
           <Route path="/tourist" element={<ProtectedRoute />}>
             <Route path="/tourist" element={<TouristPage />} />
+            <Route path=":id" element={<DetailTouristPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
