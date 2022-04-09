@@ -9,7 +9,7 @@ const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <Fragment>
       <Navbar />
-      <div className="container mx-auto">{children}</div>
+      <main>{children}</main>
     </Fragment>
   );
 };
