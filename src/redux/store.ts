@@ -2,13 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './auth/authSlice'
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { authApi } from "./api/authApi";
+import { touristApi } from "./api/touristApi";
 import persistStore from 'redux-persist/lib/persistStore';
 import touristReducer from './tourist/touristSlice';
 const store = configureStore({
-    reducer: { auth: authReducer, [authApi.reducerPath]: authApi.reducer, tourist: touristReducer },
+    reducer: { auth: authReducer, [authApi.reducerPath]: authApi.reducer, [touristApi.reducerPath]: touristApi.reducer, tourist: touristReducer },
     devTools: true,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false }).concat(authApi.middleware),
+        getDefaultMiddleware({ serializableCheck: false }).concat([authApi.middleware, touristApi.middleware]),
 })
 
 // const store: Store<ArticleState, ArticleAction> = createStore(reducer);

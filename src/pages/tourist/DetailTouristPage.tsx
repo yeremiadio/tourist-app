@@ -10,12 +10,17 @@ import { getTouristById } from "../../redux/tourist/touristSlice";
 import { TouristFormValues } from "../../model/Tourist";
 import { unwrapResult } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
+import {
+  useDeleteTouristMutation,
+  useUpdateTouristMutation,
+} from "../../redux/api/touristApi";
 
 const DetailTouristPage = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
   const {
+    id: touristId,
     tourist_profilepicture: touristProfilePicture,
     tourist_email: touristEmail,
     tourist_location: touristLocation,
@@ -38,6 +43,7 @@ const DetailTouristPage = () => {
   }, [dispatch, id]);
 
   const initialValues: TouristFormValues = {
+    id: touristId || "",
     tourist_profilepicture: touristProfilePicture || "",
     tourist_email: touristEmail || "",
     tourist_location: touristLocation || "",
@@ -51,18 +57,87 @@ const DetailTouristPage = () => {
     formikRef.current.setFieldValue("tourist_profilepicture", fileUploaded);
   };
 
+  const [
+    updateTourist,
+    { error: errorUpdate, isError: isErrorUpdate, isSuccess: isSuccessUpdate },
+  ] = useUpdateTouristMutation();
+
+  const [
+    deleteTourist,
+    { error: errorDelete, isError: isErrorDelete, isSuccess: isSuccessDelete },
+  ] = useDeleteTouristMutation();
+
   const onSubmit = async (values: any) => {
-    console.log(values);
-    // signinUser({ ...values });
-    // if (errors) {
-    //   await sleep(3000);
-    //   setErrors([]);
-    // }
+    updateTourist({ ...values });
   };
+
+  const handleDeleteTourist = () => {
+    deleteTourist({ id: touristId });
+  };
+
+  useEffect(() => {
+    const ac = new AbortController();
+    if (isErrorUpdate || isErrorDelete) {
+      //Formik Actions
+      formikRef.current.setSubmitting(false);
+      formikRef.current.resetForm();
+
+      //Get Error object
+      const errorObj = Object.assign(errorUpdate || (errorDelete as any));
+
+      //Switch case with error status
+      switch (errorObj.status) {
+        case 400:
+          toast.error(`Bad Request [${errorObj.status}]`, {
+            duration: 3000,
+            position: "bottom-center",
+          });
+          break;
+        case 500:
+          toast.error(`${errorObj.data.message}`, {
+            duration: 3000,
+            position: "bottom-center",
+          });
+          break;
+        default:
+          toast.error(`Unexpected Error`, {
+            duration: 3000,
+            position: "bottom-center",
+          });
+          break;
+      }
+    }
+    if (isSuccessUpdate || isSuccessDelete) {
+      toast.success(
+        `Tourist ${
+          isSuccessUpdate ? "updated" : isSuccessDelete ? "deleted" : ""
+        } successfully`,
+        {
+          duration: 3000,
+          position: "bottom-center",
+        }
+      );
+      formikRef.current.setSubmitting(false);
+      navigate("/tourist");
+    }
+
+    return () => {
+      ac.abort();
+    };
+  }, [
+    isErrorUpdate,
+    isSuccessUpdate,
+    dispatch,
+    isErrorDelete,
+    isSuccessDelete,
+    errorUpdate,
+    errorDelete,
+    navigate,
+  ]);
 
   return (
     <Layout>
-      <section className="p-4 h-screen w-full">
+      <section className="p-4 md:px-12 h-screen w-full">
         <Formik
           initialValues={initialValues}
           onSubmit={onSubmit}
@@ -76,7 +151,7 @@ const DetailTouristPage = () => {
                   <div className="grid grid-cols-1 place-items-center overflow-hidden">
                     <div className="flex flex-1 items-center gap-2">
                       <div className="relative">
-                        {typeof values.tourist_profilepicture === "string" ? (
+                        {typeof values.tourist_profilepicture !== "object" ? (
                           <img
                             src={touristProfilePicture}
                             alt={touristName}
@@ -84,15 +159,16 @@ const DetailTouristPage = () => {
                           />
                         ) : (
                           <img
-                            src={URL.createObjectURL(
-                              values.tourist_profilepicture
-                            )}
+                            src={
+                              URL.createObjectURL(values.tourist_profilepicture)
+                            }
                             alt={touristName}
                             className="rounded-full w-36 h-36 object-cover border border-gray-200"
                           />
                         )}
 
                         <button
+                          type="button"
                           onClick={() => uploadProfilePicture.current?.click()}
                           className="absolute bottom-1 right-2 rounded-full p-3 bg-blue-primary transition-all delay-75 hover:bg-blue-900 cursor-pointer"
                         >
@@ -135,14 +211,25 @@ const DetailTouristPage = () => {
                         type="text"
                         label="Location"
                       />
-                      <Button
-                        type="submit"
-                        bgColor="blue-primary"
-                        className="mt-4"
-                        variants="solid"
-                      >
-                        Update
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          type="submit"
+                          bgColor="blue-primary"
+                          className="mt-4"
+                          variants="solid"
+                        >
+                          Update
+                        </Button>
+                        <Button
+                          type="button"
+                          bgColor="red-500"
+                          onClick={handleDeleteTourist}
+                          className="mt-4"
+                          variants="outlined"
+                        >
+                          Delete
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>

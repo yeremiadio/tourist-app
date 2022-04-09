@@ -1,5 +1,7 @@
+import { PlusIcon } from "@heroicons/react/solid";
 import { SetStateAction, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Button from "../../components/Buttons/Button";
 import TouristCard from "../../components/Cards/TouristCard";
 import Layout from "../../components/Layouts/Layout";
 import PaginationButton from "../../components/Paginations/PaginationButton";
@@ -25,8 +27,14 @@ function TouristPage() {
 
   return (
     <Layout>
-      <section className="p-4 h-screen w-full">
+      <section className="p-4 md:px-12 h-screen w-full">
         <div className="container mx-auto">
+          <div className="mb-4 flex justify-end min-w-max">
+            <Button bgColor="blue-primary" className="gap-2">
+              <PlusIcon className="w-4 h-4" />
+              Create
+            </Button>
+          </div>
           <div
             className={classNames(
               "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"

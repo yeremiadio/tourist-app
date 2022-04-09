@@ -12,11 +12,15 @@ const TouristCard: FC<Tourist> = (props) => {
   } = props;
   return (
     <div
-      className="border transition-all delay-[20ms] hover:scale-105 border-gray-50 shadow rounded-md p-6 w-full bg-white flex flex-col justify-center md:justify-start md:flex-row gap-3 flex-1 items-center"
+      className="border transition-all break-all overflow-hidden md:h-32 delay-[20ms] hover:scale-105 border-gray-50 shadow rounded-md p-6 w-full bg-white flex flex-col justify-center md:justify-start md:flex-row gap-3 flex-1 items-center"
       key={id}
     >
       <img
-        src={tourist_profilepicture}
+        src={
+          typeof tourist_profilepicture === "string"
+            ? tourist_profilepicture
+            : "/logo192.png"
+        }
         alt={tourist_name}
         className="rounded-full w-16 h-16 object-cover"
       />
