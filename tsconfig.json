@@ -21,6 +21,11 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+  ],
+  "files": [
+    "./node_modules/redux-persist/types/integration/react.d.ts",
+    "./node_modules/redux-persist/types/persistStore.d.ts",
+    "./node_modules/redux-persist/types/storage/index.d.ts"
   ]
 }

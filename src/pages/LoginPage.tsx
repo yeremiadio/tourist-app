@@ -4,7 +4,7 @@ import Button from "../components/Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect, useRef, useState } from "react";
-import { setUser } from "../redux/auth/authSlice";
+import { getUser } from "../redux/auth/authSlice";
 import { UserLoginFormValues } from "../model/User";
 import { useSigninUserMutation } from "../redux/api/authApi";
 import { useAppDispatch } from "../redux/hooks";
@@ -67,20 +67,20 @@ function LoginPage() {
       //Define user
       const user = data.data;
       //Set user
-      dispatch(setUser(user));
       toast.success("Successfully logged in", {
         duration: 3000,
         position: "bottom-center",
       });
       formikRef.current.setSubmitting(false);
-      navigate("/");
+      navigate("/tourist");
       localStorage.setItem("token", user.Token);
+      dispatch(getUser(user.Id));
     }
 
     return () => {
       ac.abort();
     };
-  }, [isError, isSuccess]);
+  }, [isError, isSuccess, data, dispatch, error, navigate]);
 
   return (
     <div className="min-h-screen grid grid-cols-1 border border-red-500">
@@ -143,10 +143,9 @@ function LoginPage() {
                   </Button>
                   <div className="mt-6 text-center">
                     <span className="text-black-secondary text-opacity-50 text-sm">
-                      Don't have an account?
+                      Don't have an account?{" "}
                       <Link to={"/register"}>
                         <span className="text-blue-primary font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
-                          {" "}
                           Register
                         </span>
                       </Link>

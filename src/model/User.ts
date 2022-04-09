@@ -1,8 +1,9 @@
 export interface User {
-    Id: string;
-    Name: string;
-    Email: string;
-    Token: string;
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+    avatar: string;
 }
 
 export interface UserLoginFormValues {
