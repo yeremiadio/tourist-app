@@ -1,6 +1,6 @@
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { FC } from "react";
-import Tourist from "../../model/Tourist";
+import { Tourist } from "../../model/Tourist";
 
 const TouristCard: FC<Tourist> = (props) => {
   const {
