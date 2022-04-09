@@ -1,6 +1,13 @@
 import { LocationMarkerIcon, PencilIcon } from "@heroicons/react/solid";
 import { Form, Formik, FormikValues } from "formik";
-import { ChangeEvent, Fragment, useEffect, useRef } from "react";
+import {
+  ChangeEvent,
+  Fragment,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/Buttons/Button";
 import Layout from "../../components/Layouts/Layout";
@@ -14,8 +21,15 @@ import {
   useDeleteTouristMutation,
   useUpdateTouristMutation,
 } from "../../redux/api/touristApi";
+import ConfirmationModal from "../../components/Modals/ConfirmationModal";
+import DeleteModal from "../../components/Modals/DeleteModal";
 
 const DetailTouristPage = () => {
+  const [isOpenModalUpdate, setModalUpdate] =
+    useState<SetStateAction<boolean | any>>(false);
+  const [isOpenModalDelete, setModalDelete] =
+    useState<SetStateAction<boolean | any>>(false);
+
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -40,7 +54,7 @@ const DetailTouristPage = () => {
     return () => {
       ac.abort();
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, navigate]);
 
   const initialValues: TouristFormValues = {
     id: touristId || "",
@@ -147,6 +161,17 @@ const DetailTouristPage = () => {
           {({ values }) => (
             <Fragment>
               <Form>
+                <ConfirmationModal
+                  isFormSubmit
+                  isOpen={isOpenModalUpdate}
+                  setOpen={setModalUpdate}
+                  message={`update this tourist ${touristName}`}
+                />
+                <DeleteModal
+                  isOpen={isOpenModalDelete}
+                  setOpen={setModalDelete}
+                  handleClick={handleDeleteTourist}
+                />
                 <div className="container mx-auto space-y-4 md:space-y-0  max-w-4xl grid md:grid-cols-2 place-items-center">
                   <div className="grid grid-cols-1 place-items-center overflow-hidden">
                     <div className="flex flex-1 items-center gap-2">
@@ -159,9 +184,9 @@ const DetailTouristPage = () => {
                           />
                         ) : (
                           <img
-                            src={
-                              URL.createObjectURL(values.tourist_profilepicture)
-                            }
+                            src={URL.createObjectURL(
+                              values.tourist_profilepicture
+                            )}
                             alt={touristName}
                             className="rounded-full w-36 h-36 object-cover border border-gray-200"
                           />
@@ -213,7 +238,8 @@ const DetailTouristPage = () => {
                       />
                       <div className="flex gap-2">
                         <Button
-                          type="submit"
+                          type="button"
+                          onClick={() => setModalUpdate(true)}
                           bgColor="blue-primary"
                           className="mt-4"
                           variants="solid"
@@ -223,7 +249,7 @@ const DetailTouristPage = () => {
                         <Button
                           type="button"
                           bgColor="red-500"
-                          onClick={handleDeleteTourist}
+                          onClick={() => setModalDelete(true)}
                           className="mt-4"
                           variants="outlined"
                         >

@@ -1,6 +1,6 @@
 import { PlusIcon } from "@heroicons/react/solid";
 import { SetStateAction, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Button from "../../components/Buttons/Button";
 import TouristCard from "../../components/Cards/TouristCard";
 import Layout from "../../components/Layouts/Layout";
@@ -12,18 +12,33 @@ import classNames from "../../utils/tailwindClassNames";
 
 function TouristPage() {
   const dispatch = useAppDispatch();
-  const [page, setPage] = useState<SetStateAction<number | any>>(1);
+  const [searchParams, setSearchparams] = useSearchParams() as any;
+  let pageParams = searchParams.get("page") || "";
+  const [page, setPage] = useState<SetStateAction<number | any>>(
+    +pageParams || 1
+  );
   const [isLoading, setIsLoading] = useState<SetStateAction<any>>(false);
 
   const { touristList } = useAppSelector((state) => state.tourist);
+
+  // useEffect(() => {
+  //   const ac = new AbortController();
+  //   setPage(pageParams);
+
+  //   return () => {
+  //     ac.abort();
+  //   };
+  // }, []);
+
   useEffect(() => {
     const ac = new AbortController();
     window.scrollTo({ behavior: "smooth", top: 0 });
     dispatch(getTourists({ pageNum: page, setIsLoading }));
+    setSearchparams({ page });
     return () => {
       ac.abort();
     };
-  }, [dispatch, page]);
+  }, [dispatch, page, pageParams]);
 
   return (
     <Layout>
@@ -55,6 +70,7 @@ function TouristPage() {
               siblingCount={1}
               itemsPerPage={touristList.per_page}
               setPage={setPage}
+              pageParams={pageParams}
               totalRecord={touristList.totalrecord}
               totalPage={touristList.total_pages}
               currentPage={page}

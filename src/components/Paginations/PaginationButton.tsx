@@ -2,12 +2,14 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
 import { usePagination, DOTS } from "../../utils/usePagination";
 import { Dispatch, FC, SetStateAction } from "react";
 import classNames from "../../utils/tailwindClassNames";
+import { useSearchParams } from "react-router-dom";
 
 interface Props {
   currentPage: number | any;
   itemsPerPage: number | any;
   totalPage: number | any;
   totalRecord: number | any;
+  pageParams: number | any;
   setPage: Dispatch<SetStateAction<number | string | null>>;
   siblingCount: number | any;
 }
@@ -21,6 +23,7 @@ const PaginationButton: FC<Props> = (props) => {
     setPage,
     totalRecord,
   } = props;
+
   const paginationRange = usePagination({
     currentPage,
     totalRecord,
@@ -28,7 +31,6 @@ const PaginationButton: FC<Props> = (props) => {
     siblingCount,
     pageSize: itemsPerPage,
   }) as Array<any>;
-
   if (currentPage === 0) {
     return null;
   }
@@ -111,7 +113,7 @@ const PaginationButton: FC<Props> = (props) => {
                   }}
                   className={classNames(
                     "relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer",
-                    num === currentPage
+                    currentPage === num
                       ? "z-10 bg-indigo-50 border-indigo-500 text-indigo-600"
                       : "bg-white border-gray-300 text-gray-500 hover:bg-gray-50"
                   )}
