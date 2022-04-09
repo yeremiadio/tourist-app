@@ -36,7 +36,7 @@ const Button: FC<ButtonProps> = (props) => {
           `bg-${bgColor} hover:bg-opacity-80 text-white`,
         bgColor &&
           variants === "outlined" &&
-          `border-2 border-${bgColor} hover:bg-${bgColor} text-${bgColor} hover:text-white`,
+          `border-2 border-${bgColor} hover:bg-${bgColor} text-${bgColor}`,
         bgColor &&
           variants === "ghost" &&
           `hover:bg-${bgColor} hover:bg-opacity-10 text-${bgColor}`,
