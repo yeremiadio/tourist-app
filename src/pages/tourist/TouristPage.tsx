@@ -21,15 +21,6 @@ function TouristPage() {
 
   const { touristList } = useAppSelector((state) => state.tourist);
 
-  // useEffect(() => {
-  //   const ac = new AbortController();
-  //   setPage(pageParams);
-
-  //   return () => {
-  //     ac.abort();
-  //   };
-  // }, []);
-
   useEffect(() => {
     const ac = new AbortController();
     window.scrollTo({ behavior: "smooth", top: 0 });
@@ -38,14 +29,14 @@ function TouristPage() {
     return () => {
       ac.abort();
     };
-  }, [dispatch, page, pageParams]);
+  }, [dispatch, page, pageParams, setSearchparams]);
 
   return (
     <Layout>
       <section className="p-4 md:px-12 h-screen w-full">
         <div className="container mx-auto">
           <div className="mb-4 flex justify-end min-w-max">
-            <Button bgColor="blue-primary" className="gap-2">
+            <Button bgColor="blue-500" className="gap-2">
               <PlusIcon className="w-4 h-4" />
               Create
             </Button>

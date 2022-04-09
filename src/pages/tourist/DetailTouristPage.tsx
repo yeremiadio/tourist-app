@@ -195,7 +195,7 @@ const DetailTouristPage = () => {
                         <button
                           type="button"
                           onClick={() => uploadProfilePicture.current?.click()}
-                          className="absolute bottom-1 right-2 rounded-full p-3 bg-blue-primary transition-all delay-75 hover:bg-blue-900 cursor-pointer"
+                          className="absolute bottom-1 right-2 rounded-full p-3 bg-blue-500 transition-all delay-75 hover:bg-blue-900 cursor-pointer"
                         >
                           <PencilIcon className="w-5 h-5 text-white" />
                           <input
@@ -240,7 +240,7 @@ const DetailTouristPage = () => {
                         <Button
                           type="button"
                           onClick={() => setModalUpdate(true)}
-                          bgColor="blue-primary"
+                          bgColor="blue-500"
                           className="mt-4"
                           variants="solid"
                         >

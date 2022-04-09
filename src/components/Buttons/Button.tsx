@@ -2,12 +2,10 @@ import { FC, ReactNode, MouseEventHandler } from "react";
 import classNames from "../../utils/tailwindClassNames";
 import Spinner from "../Spinner";
 
-type ButtonBgColors = "blue-primary" | "black-secondary" | "red-500";
-
 type ButtonVariants = "solid" | "outlined" | "ghost";
 interface ButtonProps {
   children: ReactNode;
-  bgColor: ButtonBgColors;
+  bgColor: "blue-500" | "gray-800" | "red-500";
   className?: string;
   isLoading?: boolean;
   disabled?: boolean;
@@ -27,15 +25,20 @@ const Button: FC<ButtonProps> = (props) => {
     className,
     ...rest
   } = props;
+
   return (
     <button
       className={classNames(
         "px-6 py-[9px] font-medium text-base rounded-lg transition-all delay-75 flex items-center justify-center",
         `disabled:opacity-50 disabled:bg-opacity-100`,
-        variants === "solid" && `bg-${bgColor} hover:bg-opacity-80 text-white`,
-        variants === "outlined" &&
-          `border-2 border-${bgColor} hover:bg-${bgColor} hover:text-white text-${bgColor}`,
-        variants === "ghost" &&
+        bgColor &&
+          variants === "solid" &&
+          `bg-${bgColor} hover:bg-opacity-80 text-white`,
+        bgColor &&
+          variants === "outlined" &&
+          `border-2 border-${bgColor} hover:bg-${bgColor} text-${bgColor} hover:text-white`,
+        bgColor &&
+          variants === "ghost" &&
           `hover:bg-${bgColor} hover:bg-opacity-10 text-${bgColor}`,
         className
       )}

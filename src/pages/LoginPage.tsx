@@ -138,13 +138,13 @@ function LoginPage() {
                   />
                   <div className="my-3 float-right">
                     <Link to={"/forgot"}>
-                      <span className="text-blue-primary font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
+                      <span className="text-blue-500 font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
                         Forgot Password?
                       </span>
                     </Link>
                   </div>
                   <Button
-                    bgColor="blue-primary"
+                    bgColor="blue-500"
                     className="text-white w-full mt-2"
                     type="submit"
                     disabled={isLoading}
@@ -156,7 +156,7 @@ function LoginPage() {
                     <span className="text-black-secondary text-opacity-50 text-sm">
                       Don't have an account?{" "}
                       <Link to={"/register"}>
-                        <span className="text-blue-primary font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
+                        <span className="text-blue-500 font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
                           Register
                         </span>
                       </Link>

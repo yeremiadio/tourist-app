@@ -33,7 +33,7 @@ const ConfirmationModal = ({
       </div>
       <div className="p-4 bg-gray-100 flex justify-end gap-2">
         <Button
-          bgColor="blue-primary"
+          bgColor="blue-500"
           onClick={() => {
             if (isFormSubmit) {
               submitForm();
@@ -46,7 +46,7 @@ const ConfirmationModal = ({
           Submit
         </Button>
         <Button
-          bgColor="blue-primary"
+          bgColor="blue-500"
           variants="ghost"
           type="submit"
           onClick={() => setOpen(false)}
