@@ -9,8 +9,8 @@ function TouristPage() {
       <section className="p-4 h-screen">
         <div className="container mx-auto">
           <div className={classNames("flex gap-4 flex-col md:flex-row")}>
-            {Array.from(new Array(skeletonNum)).map((item) => (
-              <CardSkeleton key={item} />
+            {Array.from(new Array(skeletonNum)).map((item, index) => (
+              <CardSkeleton key={index} />
             ))}
           </div>
         </div>
