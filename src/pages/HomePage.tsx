@@ -1,21 +1,17 @@
-import logo from '../logo.svg';
+import { Link } from "react-router-dom";
+import Button from "../components/Buttons/Button";
 
 function HomePage() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="h-screen grid grid-cols-1 place-content-center place-items-center pb-8">
+        <img src={"/ilus-1.svg"} className="w-full md:w-2/6" alt="logo" />
+        <span className="text-gray-800 text-2xl font-extrabold mb-4">
+          Welcome to <span className="text-2xl text-blue-500">Tourist App</span>
+        </span>
+        <Link to="/register">
+          <Button bgColor="blue-500">Get Started</Button>
+        </Link>
       </header>
     </div>
   );

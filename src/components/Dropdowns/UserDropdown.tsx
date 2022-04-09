@@ -3,6 +3,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import { FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { User } from "../../model/User";
+import { deleteCookie } from "../../utils/customCookie";
 import classNames from "../../utils/tailwindClassNames";
 
 const UserDropdown: FC<Partial<User>> = (props) => {
@@ -63,8 +64,8 @@ const UserDropdown: FC<Partial<User>> = (props) => {
                     "block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100"
                   }
                   onClick={() => {
-                    navigate("/login");
-                    localStorage.removeItem("token");
+                    navigate("/");
+                    deleteCookie("token");
                   }}
                 >
                   Logout

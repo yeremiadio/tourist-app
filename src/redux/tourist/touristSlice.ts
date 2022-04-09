@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { Dispatch, SetStateAction } from "react";
 import { Tourist } from "../../model/Tourist";
 import apiClient from "../../utils/apiClient";
 

@@ -4,28 +4,30 @@ import Button from "../components/Buttons/Button";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useEffect, useRef, useState } from "react";
-import { getUser } from "../redux/auth/authSlice";
-import { UserLoginFormValues } from "../model/User";
-import { useSigninUserMutation } from "../redux/api/authApi";
+import { User } from "../model/User";
+import {
+  useSignupUserMutation,
+} from "../redux/api/authApi";
 import { useAppDispatch } from "../redux/hooks";
 import { sleep } from "../utils/sleep";
-import { getCookie, setCookie } from "../utils/customCookie";
+import { getCookie } from "../utils/customCookie";
 
-function LoginPage() {
-  const initialValues: UserLoginFormValues = {
+function RegisterPage() {
+  const initialValues: Partial<User> = {
     email: "",
     password: "",
+    name: "",
   };
   const formikRef = useRef<FormikValues>() as any;
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<Array<string>>([]);
   const navigate = useNavigate();
   const token = getCookie("token");
-  const [signinUser, { data, isLoading, error, isError, isSuccess }] =
-    useSigninUserMutation();
+  const [signupUser, { data, isLoading, error, isError, isSuccess }] =
+    useSignupUserMutation();
 
   const login = async (values: any) => {
-    signinUser({ ...values });
+    signupUser({ ...values });
     if (errors) {
       await sleep(3000);
       setErrors([]);
@@ -66,17 +68,12 @@ function LoginPage() {
       }
     }
     if (isSuccess) {
-      //Define user
-      const user = data.data;
-      //Set user
-      toast.success("Successfully logged in", {
+      toast.success("Successfully registered", {
         duration: 3000,
         position: "bottom-center",
       });
       formikRef.current.setSubmitting(false);
-      navigate("/tourist");
-      setCookie("token", user.Token);
-      dispatch(getUser(user.Id));
+      navigate("/login");
     }
 
     return () => {
@@ -107,10 +104,10 @@ function LoginPage() {
               <Form>
                 <div className="mb-6">
                   <h3 className="text-3xl font-extrabold text-black-secondary mb-1">
-                    Welcome Back!
+                    Greetings
                   </h3>
                   <p className="text-black-secondary text-opacity-50 text-sm">
-                    Please login with your valid credentials.
+                    Come and be part of our travel's agency
                   </p>
                 </div>
                 {errors.length > 0 && (
@@ -123,6 +120,13 @@ function LoginPage() {
                   </div>
                 )}
                 <div>
+                  <TextField
+                    label="Nama"
+                    type="text"
+                    name="name"
+                    isError={errors.length > 0 && true}
+                    placeholder="insert your name..."
+                  />
                   <TextField
                     label="Email address"
                     type="email"
@@ -137,6 +141,7 @@ function LoginPage() {
                     type="password"
                     placeholder="insert your password..."
                   />
+
                   <Button
                     bgColor="blue-500"
                     className="text-white w-full mt-6"
@@ -144,14 +149,14 @@ function LoginPage() {
                     disabled={isLoading}
                     isLoading={isLoading}
                   >
-                    {isLoading ? "Checking..." : "Login"}
+                    {isLoading ? "Checking..." : "Register"}
                   </Button>
                   <div className="mt-6 text-center">
                     <span className="text-black-secondary text-opacity-50 text-sm">
-                      Don't have an account?{" "}
-                      <Link to={"/register"}>
+                      Already have an account?{" "}
+                      <Link to={"/login"}>
                         <span className="text-blue-500 font-semibold transition-all delay-75 hover:text-opacity-90 text-sm">
-                          Register
+                          Login
                         </span>
                       </Link>
                     </span>
@@ -167,4 +172,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

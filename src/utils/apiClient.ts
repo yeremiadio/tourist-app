@@ -1,4 +1,5 @@
 import axios from "axios";
+import { deleteCookie, getCookie } from "./customCookie";
 
 export default function apiClient() {
 
@@ -7,7 +8,7 @@ export default function apiClient() {
   });
 
   apiClient.interceptors.request.use(function (config) {
-    const token = localStorage.getItem('token');
+    const token = getCookie('token');
     config.headers!.Authorization = token ? `Bearer ${token}` : "";
     return config;
   });
@@ -16,7 +17,7 @@ export default function apiClient() {
     (response) => response,
     (error) => {
       if (error?.response?.status === 401) {
-        localStorage.removeItem('token')
+        deleteCookie('token')
         return Promise.reject();
       }
 
